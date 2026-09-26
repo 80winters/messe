@@ -176,7 +176,38 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
 .book-link{display:block;text-align:center;margin-top:4px;padding:11px 16px;border:1px solid var(--ink);color:var(--ink);text-decoration:none;font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;transition:background .16s,color .16s}
 .book-link:hover,.book-link:focus-visible{background:var(--ink);color:#000}
 .pack .when,.party .when{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-top:-10px}
-.flex-bar{margin-top:10px;border:1px solid var(--line);padding:clamp(18px,2vw,24px) clamp(22px,2.2vw,28px);display:flex;justify-content:space-between;align-items:center;gap:18px 32px;flex-wrap:wrap}
+
+/* ---------- Pakete als Bildkarten ---------- */
+.pc-switch{display:inline-flex;border:1px solid #333;padding:3px;gap:3px;margin-bottom:20px;max-width:100%}
+.pc-switch button{font:inherit;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);background:none;border:0;padding:10px 14px;cursor:pointer;white-space:nowrap}
+.pc-switch button[aria-pressed="true"]{background:var(--ink);color:#000}
+.pc-switch button:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
+.pc-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.pc-card{display:flex;flex-direction:column;background:var(--raise);border:1px solid var(--line);min-width:0}
+.pc-card figure{margin:0;aspect-ratio:4/3;overflow:hidden;background:#141414}
+.pc-card figure img{width:100%;height:100%;object-fit:cover}
+.pc-in{display:flex;flex-direction:column;gap:9px;padding:18px 18px 20px;flex:1}
+.pc-in .dur{font-family:var(--display);font-size:clamp(17px,1.5vw,20px);line-height:1.05;text-transform:uppercase}
+.pc-in .when{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.pc-price{display:flex;flex-direction:column;gap:2px;margin-top:4px}
+.pc-num{font-family:var(--display);font-size:clamp(22px,1.9vw,27px);line-height:1;font-variant-numeric:tabular-nums}
+.pc-num small{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);margin-right:6px;vertical-align:.35em}
+.pc-per{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.pc-note{font-size:13px;color:var(--ink-3);line-height:1.45;flex:1}
+.pc-in .book-link{margin-top:6px}
+@media(max-width:1179px){
+  .pc-cards{grid-template-columns:1fr;gap:10px}
+  .pc-card{display:grid;grid-template-columns:minmax(0,38%) minmax(0,1fr)}
+  .pc-card figure{aspect-ratio:auto;height:100%;min-height:200px}
+}
+@media(max-width:599px){
+  .pc-card{display:flex}
+  .pc-card figure{aspect-ratio:2/1;min-height:0;height:auto}
+  .pc-in{padding:16px 16px 18px}
+  .pc-switch{display:flex}
+  .pc-switch button{flex:1;padding:10px 6px;font-size:11px;letter-spacing:.06em}
+}
+.flex-bar{margin-top:18px;border:1px solid var(--line);padding:clamp(18px,2vw,24px) clamp(22px,2.2vw,28px);display:flex;justify-content:space-between;align-items:center;gap:18px 32px;flex-wrap:wrap}
 .flex-bar .fb-text{display:flex;flex-direction:column;gap:5px;max-width:70ch}
 .flex-bar .fb-h{font-family:var(--display);font-size:clamp(17px,1.8vw,21px);text-transform:uppercase;line-height:1}
 .flex-bar .fb-t{font-size:13.5px;color:var(--ink-2);line-height:1.45}
@@ -361,103 +392,62 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
 
 <section class="bleed rise">
   <p class="label" data-de="Pakete">Packages</p>
-  <div class="packs">
-
-    <div class="pack early">
-      <span class="dur" data-de="Leerer Stand">Empty stand</span>
-      <span class="when" data-de="8 bis 9 Uhr, vor Messeöffnung">8 to 9 am, before the doors open</span>
-      <ul class="tiers">
-        <li><span class="what" data-de="Foto">Photo</span><span class="fee" data-de="220 €">€220</span></li>
-        <li><span class="what" data-de="Video">Video</span><span class="fee" data-de="350 €">€350</span></li>
-        <li><span class="what" data-de="Foto + Video">Photo + video</span><span class="fee" data-de="520 €">€520</span></li>
-      </ul>
-      <ul class="incl">
-        <li data-de="Ihr Stand leer und aufgeräumt, bevor jemand darauf steht">Your stand empty and clean, before anyone is on it</li>
-        <li data-de="Mind. 30 bearbeitete Bilder, Video: ein Reel (mind. 30 s)">At least 30 edited images, video: one reel (min. 30 s)</li>
-        <li data-de="Erstes Material direkt im Anschluss">First material right after the shoot</li>
-      </ul>
-      <div class="party-pics pack-pics">
-        <img src="https://static.wixstatic.com/media/fe18f9_e6f3171232ef482e99232998adeb250c~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Exhibition stand before the doors open" loading="lazy">
-        <img src="https://static.wixstatic.com/media/fe18f9_3b67514914ba43a1a4bb773768088bf7~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Exhibition stand before the doors open" loading="lazy">
-      </div>
-      <a class="book-link" href="https://cal.com/neverdaless/stand-early" target="_blank" rel="noopener" data-de="Buchen">Book</a>
-    </div>
-
-    <div class="pack">
-      <span class="dur" data-de="Stundenweise">By the hour</span>
-      <table class="hrs">
-        <thead><tr><th></th><th>1 h</th><th>2 h</th><th>3 h</th></tr></thead>
-        <tbody>
-          <tr><td data-de="Foto">Photo</td><td data-de="220 €">€220</td><td data-de="340 €">€340</td><td data-de="450 €">€450</td></tr>
-          <tr><td data-de="Video">Video</td><td data-de="350 €">€350</td><td data-de="590 €">€590</td><td data-de="830 €">€830</td></tr>
-          <tr><td data-de="Foto + Video">Photo + video</td><td data-de="520 €">€520</td><td data-de="880 €">€880</td><td data-de="1.230 €">€1,230</td></tr>
-        </tbody>
-      </table>
-      <ul class="incl">
-        <li data-de="Mind. 30 bearbeitete Bilder pro Stunde">At least 30 edited images per hour</li>
-        <li data-de="Video: ein Reel (mind. 30 s) pro Stunde">Video: one reel (min. 30 s) per hour</li>
-        <li data-de="Erstes Material direkt im Anschluss">First material right after the shoot</li>
-      </ul>
-      <a class="book-link" href="https://cal.com/neverdaless/stand-1h" target="_blank" rel="noopener" data-de="Buchen">Book</a>
-    </div>
-
-    <div class="pack">
-      <span class="dur" data-de="Halber Messetag">Half fair day</span>
-      <ul class="tiers">
-        <li><span class="what" data-de="Foto">Photo</span><span class="fee" data-de="950 €">€950</span></li>
-        <li><span class="what" data-de="Video">Video</span><span class="fee" data-de="1.400 €">€1,400</span></li>
-        <li><span class="what" data-de="Foto + Video">Photo + video</span><span class="fee" data-de="2.250 €">€2,250</span></li>
-      </ul>
-      <ul class="incl">
-        <li data-de="Mind. 150 bearbeitete Bilder">At least 150 edited images</li>
-        <li data-de="Video: Short Recap (mind. 30 s) und 1–2 Reels">Video: short recap (min. 30 s) and 1–2 reels</li>
-        <li data-de="Erstes Material direkt im Anschluss, alles Weitere in 2 Werktagen">First material right after the shoot, everything else within 2 working days</li>
-      </ul>
-      <a class="book-link" href="https://cal.com/neverdaless/stand-half" target="_blank" rel="noopener" data-de="Buchen">Book</a>
-    </div>
-
-    <div class="pack">
-      <span class="dur" data-de="Ganzer Messetag">Full fair day</span>
-      <ul class="tiers">
-        <li><span class="what" data-de="Foto">Photo</span><span class="fee" data-de="1.750 €">€1,750</span></li>
-        <li><span class="what" data-de="Video">Video</span><span class="fee" data-de="2.650 €">€2,650</span></li>
-        <li><span class="what" data-de="Foto + Video">Photo + video</span><span class="fee" data-de="4.300 €">€4,300</span></li>
-      </ul>
-      <ul class="incl">
-        <li data-de="Mind. 300 bearbeitete Bilder">At least 300 edited images</li>
-        <li data-de="Video: Long Recap (mind. 120 s) und 2 Reels">Video: long recap (min. 120 s) and 2 reels</li>
-        <li data-de="Erstes Material direkt im Anschluss, alles Weitere in 3 Werktagen">First material right after the shoot, everything else within 3 working days</li>
-      </ul>
-      <a class="book-link" href="https://cal.com/neverdaless/stand-full" target="_blank" rel="noopener" data-de="Buchen">Book</a>
-    </div>
-
-
+  <div class="pc-switch" role="group" aria-label="Photo, video or both">
+    <button type="button" aria-pressed="false" data-m="0" data-de="Foto">Photo</button><button type="button" aria-pressed="false" data-m="1">Video</button><button type="button" aria-pressed="true" data-m="2" data-de="Foto + Video">Photo + video</button>
   </div>
-  <div class="party">
-    <div class="party-text">
-      <span class="dur" data-de="Standparty &amp; Abendtermine">Stand party &amp; evening events</span>
-      <span class="when" data-de="16 bis 24 Uhr">4 pm to midnight</span>
-      <ul class="incl">
-        <li data-de="Stimmung, Gäste, Reden, Gruppenbilder">Atmosphere, guests, speeches, group shots</li>
-        <li data-de="Mind. 30 bearbeitete Bilder pro Stunde, Video: ein Reel (mind. 30 s) pro Stunde">At least 30 edited images per hour, video: one reel (min. 30 s) per hour</li>
-        <li data-de="Erstes Material am nächsten Morgen">First material the next morning</li>
-      </ul>
-      <div class="party-pics">
-        <img src="https://static.wixstatic.com/media/fe18f9_c13790f0df7c42edad67ee295986410c~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Guests at an evening event" loading="lazy">
-        <img src="https://static.wixstatic.com/media/fe18f9_47ec102cd87f4209b9aff0b57f168195~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Guest laughing at an evening event" loading="lazy">
+  <div class="pc-cards">
+    <article class="pc-card">
+      <figure><img src="https://static.wixstatic.com/media/fe18f9_e6f3171232ef482e99232998adeb250c~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Empty exhibition stand before the doors open" loading="lazy"></figure>
+      <div class="pc-in">
+        <span class="dur" data-de="Leerer Stand">Empty stand</span>
+        <span class="when" data-de="8 bis 9 Uhr">8 to 9 am</span>
+        <div class="pc-price"><span class="pc-num" data-p="220,350,520"></span></div>
+        <p class="pc-note" data-de="Ihr Stand leer und aufgeräumt, bevor jemand darauf steht. Mind. 30 Bilder, ein Reel (mind. 30 s).">Your stand empty and clean, before anyone is on it. At least 30 images, one reel (min. 30 s).</p>
+        <a class="book-link" href="https://cal.com/neverdaless/stand-early" target="_blank" rel="noopener" data-de="Buchen">Book</a>
       </div>
-    </div>
-    <div class="party-price">
-      <table class="hrs">
-        <thead><tr><th></th><th>1 h</th><th>2 h</th><th>3 h</th></tr></thead>
-        <tbody>
-          <tr><td data-de="Foto">Photo</td><td data-de="220 €">€220</td><td data-de="340 €">€340</td><td data-de="450 €">€450</td></tr>
-          <tr><td data-de="Video">Video</td><td data-de="350 €">€350</td><td data-de="590 €">€590</td><td data-de="830 €">€830</td></tr>
-          <tr><td data-de="Foto + Video">Photo + video</td><td data-de="520 €">€520</td><td data-de="880 €">€880</td><td data-de="1.230 €">€1,230</td></tr>
-        </tbody>
-      </table>
-      <a class="book-link" href="https://cal.com/neverdaless/stand-party" target="_blank" rel="noopener" data-de="Buchen">Book</a>
-    </div>
+    </article>
+    <article class="pc-card">
+      <figure><img src="https://static.wixstatic.com/media/fe18f9_819203588e8948dcbc297788738a130d~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Conversation at an exhibition stand" loading="lazy"></figure>
+      <div class="pc-in">
+        <span class="dur" data-de="Stundenweise">By the hour</span>
+        <span class="when" data-de="1–3 Std, 8 bis 18 Uhr">1–3 h, 8 am to 6 pm</span>
+        <div class="pc-price"><span class="pc-num" data-p="220,350,520" data-pre="1"></span>
+        <span class="pc-per" data-h="340,590,880|450,830,1230"></span></div>
+        <p class="pc-note" data-de="Mind. 30 Bilder und ein Reel (mind. 30 s) pro Stunde. Erstes Material direkt im Anschluss.">At least 30 images and one reel (min. 30 s) per hour. First material right after the shoot.</p>
+        <a class="book-link" href="https://cal.com/neverdaless/stand-1h" target="_blank" rel="noopener" data-de="Buchen">Book</a>
+      </div>
+    </article>
+    <article class="pc-card">
+      <figure><img src="https://static.wixstatic.com/media/fe18f9_c8fdcafd9284401580be539fdeed24a1~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Visitor looking at a product at an exhibition stand" loading="lazy"></figure>
+      <div class="pc-in">
+        <span class="dur" data-de="Halber Messetag">Half fair day</span>
+        <span class="when" data-de="8–13 oder 13–18 Uhr">8 am–1 pm or 1–6 pm</span>
+        <div class="pc-price"><span class="pc-num" data-p="950,1400,2250"></span></div>
+        <p class="pc-note" data-de="Mind. 150 Bilder, Short Recap (mind. 30 s) und 1–2 Reels. Alles Weitere in 2 Werktagen.">At least 150 images, short recap (min. 30 s) and 1–2 reels. Everything else within 2 working days.</p>
+        <a class="book-link" href="https://cal.com/neverdaless/stand-half" target="_blank" rel="noopener" data-de="Buchen">Book</a>
+      </div>
+    </article>
+    <article class="pc-card">
+      <figure><img src="https://static.wixstatic.com/media/fe18f9_01d2f9b3198249a7b5ce301fa843e7c3~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Exhibition stand with visitors" loading="lazy"></figure>
+      <div class="pc-in">
+        <span class="dur" data-de="Ganzer Messetag">Full fair day</span>
+        <span class="when" data-de="8 bis 18 Uhr">8 am to 6 pm</span>
+        <div class="pc-price"><span class="pc-num" data-p="1750,2650,4300"></span></div>
+        <p class="pc-note" data-de="Mind. 300 Bilder, Long Recap (mind. 120 s) und 2 Reels. Alles Weitere in 3 Werktagen.">At least 300 images, long recap (min. 120 s) and 2 reels. Everything else within 3 working days.</p>
+        <a class="book-link" href="https://cal.com/neverdaless/stand-full" target="_blank" rel="noopener" data-de="Buchen">Book</a>
+      </div>
+    </article>
+    <article class="pc-card">
+      <figure><img src="https://static.wixstatic.com/media/fe18f9_c13790f0df7c42edad67ee295986410c~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Guests at an evening event" loading="lazy"></figure>
+      <div class="pc-in">
+        <span class="dur" data-de="Standparty">Stand party</span>
+        <span class="when" data-de="1–3 Std, 16 bis 24 Uhr">1–3 h, 4 pm to midnight</span>
+        <div class="pc-price"><span class="pc-num" data-p="220,350,520" data-pre="1"></span>
+        <span class="pc-per" data-h="340,590,880|450,830,1230"></span></div>
+        <p class="pc-note" data-de="Stimmung, Gäste, Reden, Gruppenbilder. Erstes Material am nächsten Morgen.">Atmosphere, guests, speeches, group shots. First material the next morning.</p>
+        <a class="book-link" href="https://cal.com/neverdaless/stand-party" target="_blank" rel="noopener" data-de="Buchen">Book</a>
+      </div>
+    </article>
   </div>
   <div class="flex-bar">
     <div class="fb-text">
@@ -524,6 +514,7 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
       b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang));
     });
     document.documentElement.lang = lang;
+    if (window.ndlPrices) window.ndlPrices();
     try { localStorage.setItem("ndl-lang", lang); } catch(e){}
   }
   buttons.forEach(function(b){
@@ -643,4 +634,27 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
 })();
 </script>
 
+
+<script>
+/* Preise der Paketkarten: Umschalter Foto | Video | Foto + Video, Format je Sprache */
+(function(){
+  var mode = 2;
+  function eur(n, de){ var t = String(n).replace(/\B(?=(\d{3})+(?!\d))/g, de ? "." : ","); return de ? t + " €" : "€" + t; }
+  window.ndlPrices = function(){
+    var de = document.documentElement.lang === "de";
+    document.querySelectorAll(".pc-num").forEach(function(el){
+      var v = el.getAttribute("data-p").split(",")[mode];
+      el.innerHTML = (el.hasAttribute("data-pre") ? "<small>" + (de ? "1 Std" : "1 h") + "</small>" : "") + eur(v, de);
+    });
+    document.querySelectorAll(".pc-per").forEach(function(el){
+      var h = el.getAttribute("data-h").split("|");
+      el.textContent = (de ? "2 Std " : "2 h ") + eur(h[0].split(",")[mode], de) + " · " + (de ? "3 Std " : "3 h ") + eur(h[1].split(",")[mode], de);
+    });
+    document.querySelectorAll(".pc-switch button").forEach(function(b){ b.setAttribute("aria-pressed", String(+b.getAttribute("data-m") === mode)); });
+  };
+  var sw = document.querySelector(".pc-switch");
+  if (sw) sw.addEventListener("click", function(e){ var b = e.target.closest("button"); if (!b) return; mode = +b.getAttribute("data-m"); window.ndlPrices(); });
+  window.ndlPrices();
+})();
+</script>
 </body></html>
