@@ -271,8 +271,13 @@ section.alt .flex-bar{border-color:#2a2a2a}
 .pack-pics{margin-top:4px}
 .cal-wrap{margin-top:clamp(36px,4.5vw,56px);border-top:1px solid var(--line);padding-top:clamp(24px,3vw,36px);scroll-margin-top:24px}
 #cal-inline{width:100%;min-height:0}
-.cal-wrap.loaded .cal-fallback{display:none}
-.cal-fallback{max-width:360px}
+.cal-actions{display:flex;flex-wrap:wrap;gap:10px 12px;max-width:640px}
+.cal-actions .book-link{flex:1 1 240px;margin-top:0;font-family:var(--body);background:none;cursor:pointer}
+.cal-actions .cal-load{background:var(--ink);color:#000}
+.cal-actions .cal-load:hover,.cal-actions .cal-load:focus-visible{background:transparent;color:var(--ink)}
+.cal-hint{margin:12px 0 0;color:var(--ink-3);font-size:13px;line-height:1.55;max-width:62ch}
+.cal-wrap.started .cal-load{display:none}
+.cal-wrap.loaded .cal-actions,.cal-wrap.loaded .cal-hint{display:none}
 .solo .lead{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
 .direct{font-size:15px;color:var(--ink-2);margin:0}
 .direct a{color:var(--ink);text-decoration:none;white-space:nowrap}
@@ -444,8 +449,8 @@ section.alt .flex-bar{border-color:#2a2a2a}
         <span class="when" data-de="8–13 oder 13–18 Uhr">8 am–1 pm or 1–6 pm</span>
         <div class="pc-price"><span class="pc-num" data-p="950,1400,2250"></span></div>
         <p class="pc-note" data-mode="0" data-de="Mind. 150 bearbeitete Bilder. Die ersten direkt im Anschluss, der Rest in 2 Werktagen.">At least 150 edited images. The first ones right after the shoot, the rest within 2 working days.</p>
-        <p class="pc-note" data-mode="1" data-de="Short Recap (mind. 30 s) und 1–2 Reels, innerhalb von fünf Werktagen.">Short recap (min. 30 s) and 1–2 reels, within five working days.</p>
-        <p class="pc-note" data-mode="2" data-de="Mind. 150 Bilder, Short Recap (mind. 30 s) und 1–2 Reels. Erste Bilder direkt im Anschluss.">At least 150 images, short recap (min. 30 s) and 1–2 reels. First images right after the shoot.</p>
+        <p class="pc-note" data-mode="1" data-de="Short Recap (mind. 60 s) und 1 Reel, innerhalb von fünf Werktagen.">Short recap (min. 60 s) and 1 reel, within five working days.</p>
+        <p class="pc-note" data-mode="2" data-de="Mind. 150 Bilder, Short Recap (mind. 60 s) und 1 Reel. Erste Bilder direkt im Anschluss.">At least 150 images, short recap (min. 60 s) and 1 reel. First images right after the shoot.</p>
         <a class="book-link" href="https://cal.com/neverdaless/stand-half" target="_blank" rel="noopener" data-de="Buchen">Book</a>
       </div>
     </article>
@@ -482,7 +487,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
     </div>
     <a class="fb-link" href="#kontakt" data-de="Zum Kontakt">Get in touch</a>
   </div>
-  <p class="fine" data-de="Alle Preise netto zzgl. 19 % USt. Unbeschränkte Nutzungsrechte, Onlinegalerie und Datenhandling sind enthalten, Anfahrt fällt nicht an. Reels und Recap-Videos kommen innerhalb von fünf Werktagen.">All prices net, plus 19&nbsp;% VAT. Unlimited usage rights, online gallery and data handling are included, and there are no travel costs. Reels and recap videos are delivered within five working days.</p>
+  <p class="fine" data-de="Alle Preise netto, für Unternehmen in Deutschland zzgl. 19 % USt. Für Unternehmen aus dem EU-Ausland gilt das Reverse-Charge-Verfahren, außerhalb der EU fällt keine deutsche USt an. Unbeschränkte Nutzungsrechte, Onlinegalerie und Datenhandling sind enthalten, Anfahrt fällt nicht an. Reels und Recap-Videos kommen innerhalb von fünf Werktagen.">All prices net, plus 19&nbsp;% VAT for companies in Germany. For companies in other EU countries the reverse-charge procedure applies; outside the EU no German VAT is charged. Unlimited usage rights, online gallery and data handling are included, and there are no travel costs. Reels and recap videos are delivered within five working days.</p>
 </section>
 
 <section class="bleed rise" id="booking">
@@ -504,7 +509,11 @@ section.alt .flex-bar{border-color:#2a2a2a}
     </div>
   </div>
   <div class="cal-wrap" id="cal">
-    <div class="cal-fallback"><a class="book-link" href="https://cal.com/neverdaless" target="_blank" rel="noopener" data-de="Kalender in neuem Tab öffnen">Open the calendar in a new tab</a></div>
+    <div class="cal-actions">
+      <button type="button" class="book-link cal-load" data-de="Kalender hier anzeigen">Show the calendar here</button>
+      <a class="book-link" href="https://cal.com/neverdaless" target="_blank" rel="noopener" data-de="Kalender in neuem Tab öffnen">Open the calendar in a new tab</a>
+    </div>
+    <p class="cal-hint" data-de="Der Kalender wird von Cal.com bereitgestellt. Eine Verbindung zu Cal.com entsteht erst, wenn Sie ihn anzeigen oder öffnen.">The calendar is provided by Cal.com. A connection to Cal.com is only made once you show or open it.</p>
     <div id="cal-inline"></div>
   </div>
 </section>
@@ -590,7 +599,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
   }
 
 
-  /* --- Cal.com-Kalender eingebettet, lädt erst kurz vor dem Sichtbarwerden --- */
+  /* --- Cal.com-Kalender eingebettet, lädt erst nach Klick (keine Verbindung zu Cal.com ohne Zustimmung) --- */
   (function(){
     var box = document.getElementById("cal-inline");
     if (!box) return;
@@ -604,9 +613,8 @@ section.alt .flex-bar{border-color:#2a2a2a}
       var t = setInterval(function(){ if (box.querySelector("iframe")) { box.parentNode.classList.add("loaded"); clearInterval(t); } }, 500);
       setTimeout(function(){ clearInterval(t); }, 20000);
     }
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function(es, o){ if (es[0].isIntersecting) { loadCal(); o.disconnect(); } }, { rootMargin: "800px 0px" }).observe(box);
-    } else loadCal();
+    var wrap = document.getElementById("cal"), btn = document.querySelector(".cal-load");
+    if (btn) btn.addEventListener("click", function(){ wrap.classList.add("started"); loadCal(); });
   })();
 
   /* --- Galerie aufklappen --- */
