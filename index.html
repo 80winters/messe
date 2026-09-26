@@ -220,6 +220,10 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
 .bk-grid .solo{padding-top:28px;border-top:1px solid var(--line)}
 @media(min-width:768px){.bk-grid{grid-template-columns:1fr 1fr;align-items:center}.bk-grid .solo{padding-top:0;border-top:0;padding-left:clamp(28px,4vw,56px);border-left:1px solid var(--line)}}
 .bk-grid .solo .pic{width:clamp(110px,14vw,170px)}
+.cal-wrap{margin-top:clamp(36px,4.5vw,56px);border-top:1px solid var(--line);padding-top:clamp(24px,3vw,36px);scroll-margin-top:24px}
+#cal-inline{width:100%;min-height:0}
+.cal-wrap.loaded .cal-fallback{display:none}
+.cal-fallback{max-width:360px}
 .solo .lead{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
 .direct{font-size:15px;color:var(--ink-2);margin:0}
 .direct a{color:var(--ink);text-decoration:none;white-space:nowrap}
@@ -475,7 +479,7 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
   <div class="bk-grid">
     <div class="book">
       <p class="sub" style="color:var(--ink-2);max-width:48ch" data-de="Im Kalender sehen Sie, was auf der {fair} vom {dates} noch frei ist.">The calendar shows what is still free at {fair} on {dates}.</p>
-      <a class="cta" href="https://cal.com/neverdaless" data-de="Kalender öffnen">Open the calendar</a>
+      <a class="cta" href="#cal" data-de="Zum Kalender">To the calendar</a>
     </div>
     <div class="solo" id="kontakt">
       <div class="pic"><img src="https://static.wixstatic.com/media/fe18f9_8ae311d345a8436ba054f29201dc0108~mv2.jpg/v1/fill/w_520,h_694,fp_0.54_0.31,q_85/file.jpg" alt="Richard Mathieu" loading="lazy"></div>
@@ -487,6 +491,10 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
         <span class="crew" data-de="Umgesetzt werden die Aufträge vom NEVERDALESS-Team.">Jobs are carried out by the NEVERDALESS team.</span>
       </div>
     </div>
+  </div>
+  <div class="cal-wrap" id="cal">
+    <div class="cal-fallback"><a class="book-link" href="https://cal.com/neverdaless" target="_blank" rel="noopener" data-de="Kalender in neuem Tab öffnen">Open the calendar in a new tab</a></div>
+    <div id="cal-inline"></div>
   </div>
 </section>
 
@@ -568,6 +576,26 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
       }, 3000);
     });
   }
+
+
+  /* --- Cal.com-Kalender eingebettet, lädt erst kurz vor dem Sichtbarwerden --- */
+  (function(){
+    var box = document.getElementById("cal-inline");
+    if (!box) return;
+    var started = false;
+    function loadCal(){
+      if (started) return; started = true;
+      (function (C, A, L) { var p = function (a, ar) { a.q.push(ar); }; var d = C.document; C.Cal = C.Cal || function () { var cal = C.Cal; var ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { var api = function () { p(api, arguments); }; var namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+      Cal("init", "messe", { origin: "https://app.cal.com" });
+      Cal.ns.messe("inline", { elementOrSelector: "#cal-inline", calLink: "neverdaless", config: { layout: "month_view", theme: "dark" } });
+      Cal.ns.messe("ui", { theme: "dark", layout: "month_view", hideEventTypeDetails: false, cssVarsPerTheme: { dark: { "cal-brand": "#ffffff" } } });
+      var t = setInterval(function(){ if (box.querySelector("iframe")) { box.parentNode.classList.add("loaded"); clearInterval(t); } }, 500);
+      setTimeout(function(){ clearInterval(t); }, 20000);
+    }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function(es, o){ if (es[0].isIntersecting) { loadCal(); o.disconnect(); } }, { rootMargin: "800px 0px" }).observe(box);
+    } else loadCal();
+  })();
 
   /* --- Galerie aufklappen --- */
   var moreBtn = document.querySelector(".more-btn");
