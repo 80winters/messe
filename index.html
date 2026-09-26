@@ -202,6 +202,13 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
   .pc-card:hover figure img{transform:scale(1.035)}
 }
 .pc-card:focus-within{border-color:#3a3a3a}
+/* Abschnitte abwechselnd heller */
+section.alt{background:#101010;border-block:1px solid #1b1b1b}
+section.alt .label{border-bottom-color:#2a2a2a}
+section.alt .pc-card{background:#171717;border-color:#262626}
+section.alt .flex-bar{border-color:#2a2a2a}
+@media(hover:hover){section.alt .pc-card:hover{background:#1e1e1e;border-color:#3a3a3a}}
+
 @media(prefers-reduced-motion:reduce){.pc-card,.pc-card figure img{transition:none}.pc-card:hover{transform:none}.pc-card:hover figure img{transform:none}}
 @media(max-width:1179px){
   .pc-cards{grid-template-columns:1fr;gap:10px}
@@ -341,7 +348,7 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
   </div>
 </section>
 
-<section class="bleed rise">
+<section class="bleed rise alt">
   <p class="label" data-de="Unsere Referenzen">Our work</p>
   <div class="films">
     <video src="https://video.wixstatic.com/video/fe18f9_1ea583b1c28b4db09e87d09adfff8e07/720p/mp4/file.mp4" poster="https://static.wixstatic.com/media/fe18f9_2d4021ef36b045e5b7be317c3b032c5f~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" controls muted playsinline preload="none"></video>
@@ -398,7 +405,7 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
   </a>
 </section>
 
-<section class="bleed rise">
+<section class="bleed rise alt">
   <p class="label" data-de="Pakete">Packages</p>
   <div class="pc-switch" role="group" aria-label="Photo, video or both">
     <button type="button" aria-pressed="false" data-m="0" data-de="Foto">Photo</button><button type="button" aria-pressed="false" data-m="1">Video</button><button type="button" aria-pressed="true" data-m="2" data-de="Foto + Video">Photo + video</button>
