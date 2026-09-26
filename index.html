@@ -9,10 +9,9 @@
 <meta property="og:description" content="Photo and video for your exhibition stand at ALUMINIUM 2026, bookable by the hour.">
 <meta property="og:image" content="https://static.wixstatic.com/media/fe18f9_3aad3841d3294165a005862a00bf77a9~mv2.jpg/v1/fill/w_1200,h_630,q_85/file.jpg">
 <meta name="theme-color" content="#000000">
+<link rel="icon" href="https://static.wixstatic.com/shapes/af249d_1c108b23d3884ca4b570a768c22b61ab.svg" type="image/svg+xml">
 <title>Exhibition Stand Documentation</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 
 <style>
 :root{
@@ -195,6 +194,8 @@ html.no-lens .lens .tx,html.no-lens .lens .n{opacity:1;transform:none}
 .pc-per{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .pc-note{font-size:13px;color:var(--ink-3);line-height:1.45;flex:1}
 .pc-in .book-link{margin-top:6px}
+.pc-note[data-mode]{display:none}
+.pc-cards.m0 .pc-note[data-mode="0"],.pc-cards.m1 .pc-note[data-mode="1"],.pc-cards.m2 .pc-note[data-mode="2"]{display:block}
 .pc-card{transition:transform .25s ease,background-color .25s ease,border-color .25s ease,box-shadow .25s ease}
 .pc-card figure img{transition:transform .5s ease}
 @media(hover:hover){
@@ -312,8 +313,6 @@ section.alt .flex-bar{border-color:#2a2a2a}
   .lens .tx,.lens .n{opacity:1!important;transform:none!important}
 }
 </style>
-</head>
-<body>
 
 <div class="bar bleed">
   <button type="button" data-lang="en" aria-pressed="true">EN</button>
@@ -321,7 +320,9 @@ section.alt .flex-bar{border-color:#2a2a2a}
 </div>
 
 <div class="stage">
-  <img class="on" src="https://static.wixstatic.com/media/fe18f9_3aad3841d3294165a005862a00bf77a9~mv2.jpg/v1/fit/w_2200,h_2200,q_85/file.jpg" alt="Exhibition stand" loading="eager">
+  <img
+</head>
+<body> class="on" src="https://static.wixstatic.com/media/fe18f9_3aad3841d3294165a005862a00bf77a9~mv2.jpg/v1/fit/w_2200,h_2200,q_85/file.jpg" alt="Exhibition stand" loading="eager">
   <img data-src="https://static.wixstatic.com/media/fe18f9_f1a3544f00364aa5aa9fd67310ba8a35~mv2.jpg/v1/fit/w_2200,h_2200,q_85/file.jpg" alt="Exhibition stand">
   <img data-src="https://static.wixstatic.com/media/fe18f9_0e9bf6e1a6534a59a7f3d863154196d4~mv2.jpg/v1/fit/w_2200,h_2200,q_85/file.jpg" alt="Exhibition stand">
   <img data-src="https://static.wixstatic.com/media/fe18f9_e96d45f8e0614279ace6249fa4a36d3a~mv2.jpg/v1/fit/w_2200,h_2200,q_85/file.jpg" alt="Exhibition stand">
@@ -410,14 +411,16 @@ section.alt .flex-bar{border-color:#2a2a2a}
   <div class="pc-switch" role="group" aria-label="Photo, video or both">
     <button type="button" aria-pressed="false" data-m="0" data-de="Foto">Photo</button><button type="button" aria-pressed="false" data-m="1">Video</button><button type="button" aria-pressed="true" data-m="2" data-de="Foto + Video">Photo + video</button>
   </div>
-  <div class="pc-cards">
+  <div class="pc-cards m2">
     <article class="pc-card">
       <figure><img src="https://static.wixstatic.com/media/fe18f9_e6f3171232ef482e99232998adeb250c~mv2.jpg/v1/fit/w_1600,h_1600,q_85/file.jpg" alt="Empty exhibition stand before the doors open" loading="lazy"></figure>
       <div class="pc-in">
         <span class="dur" data-de="Leerer Stand">Empty stand</span>
         <span class="when" data-de="8 bis 9 Uhr">8 to 9 am</span>
         <div class="pc-price"><span class="pc-num" data-p="220,350,520"></span></div>
-        <p class="pc-note" data-de="Ihr Stand leer und aufgeräumt, bevor jemand darauf steht. Mind. 30 Bilder, ein Reel (mind. 30 s).">Your stand empty and clean, before anyone is on it. At least 30 images, one reel (min. 30 s).</p>
+        <p class="pc-note" data-mode="0" data-de="Ihr Stand leer und aufgeräumt, bevor jemand darauf steht. Mind. 30 bearbeitete Bilder, die ersten direkt im Anschluss.">Your stand empty and clean, before anyone is on it. At least 30 edited images, the first ones right after the shoot.</p>
+        <p class="pc-note" data-mode="1" data-de="Ihr Stand leer und aufgeräumt, bevor jemand darauf steht. Ein Reel (mind. 30 s), innerhalb von fünf Werktagen.">Your stand empty and clean, before anyone is on it. One reel (min. 30 s), within five working days.</p>
+        <p class="pc-note" data-mode="2" data-de="Ihr Stand leer und aufgeräumt, bevor jemand darauf steht. Mind. 30 Bilder und ein Reel (mind. 30 s).">Your stand empty and clean, before anyone is on it. At least 30 images and one reel (min. 30 s).</p>
         <a class="book-link" href="https://cal.com/neverdaless/stand-early" target="_blank" rel="noopener" data-de="Buchen">Book</a>
       </div>
     </article>
@@ -428,7 +431,9 @@ section.alt .flex-bar{border-color:#2a2a2a}
         <span class="when" data-de="1–3 Std, 8 bis 18 Uhr">1–3 h, 8 am to 6 pm</span>
         <div class="pc-price"><span class="pc-num" data-p="220,350,520" data-pre="1"></span>
         <span class="pc-per" data-h="340,590,880|450,830,1230"></span></div>
-        <p class="pc-note" data-de="Mind. 30 Bilder und ein Reel (mind. 30 s) pro Stunde. Erstes Material direkt im Anschluss.">At least 30 images and one reel (min. 30 s) per hour. First material right after the shoot.</p>
+        <p class="pc-note" data-mode="0" data-de="Mind. 30 bearbeitete Bilder pro Stunde. Die ersten direkt im Anschluss.">At least 30 edited images per hour. The first ones right after the shoot.</p>
+        <p class="pc-note" data-mode="1" data-de="Ein Reel (mind. 30 s) pro Stunde, innerhalb von fünf Werktagen.">One reel (min. 30 s) per hour, within five working days.</p>
+        <p class="pc-note" data-mode="2" data-de="Mind. 30 Bilder und ein Reel (mind. 30 s) pro Stunde. Erste Bilder direkt im Anschluss.">At least 30 images and one reel (min. 30 s) per hour. First images right after the shoot.</p>
         <a class="book-link" href="https://cal.com/neverdaless/stand-1h" target="_blank" rel="noopener" data-de="Buchen">Book</a>
       </div>
     </article>
@@ -438,7 +443,9 @@ section.alt .flex-bar{border-color:#2a2a2a}
         <span class="dur" data-de="Halber Messetag">Half fair day</span>
         <span class="when" data-de="8–13 oder 13–18 Uhr">8 am–1 pm or 1–6 pm</span>
         <div class="pc-price"><span class="pc-num" data-p="950,1400,2250"></span></div>
-        <p class="pc-note" data-de="Mind. 150 Bilder, Short Recap (mind. 30 s) und 1–2 Reels. Alles Weitere in 2 Werktagen.">At least 150 images, short recap (min. 30 s) and 1–2 reels. Everything else within 2 working days.</p>
+        <p class="pc-note" data-mode="0" data-de="Mind. 150 bearbeitete Bilder. Die ersten direkt im Anschluss, der Rest in 2 Werktagen.">At least 150 edited images. The first ones right after the shoot, the rest within 2 working days.</p>
+        <p class="pc-note" data-mode="1" data-de="Short Recap (mind. 30 s) und 1–2 Reels, innerhalb von fünf Werktagen.">Short recap (min. 30 s) and 1–2 reels, within five working days.</p>
+        <p class="pc-note" data-mode="2" data-de="Mind. 150 Bilder, Short Recap (mind. 30 s) und 1–2 Reels. Erste Bilder direkt im Anschluss.">At least 150 images, short recap (min. 30 s) and 1–2 reels. First images right after the shoot.</p>
         <a class="book-link" href="https://cal.com/neverdaless/stand-half" target="_blank" rel="noopener" data-de="Buchen">Book</a>
       </div>
     </article>
@@ -448,7 +455,9 @@ section.alt .flex-bar{border-color:#2a2a2a}
         <span class="dur" data-de="Ganzer Messetag">Full fair day</span>
         <span class="when" data-de="8 bis 18 Uhr">8 am to 6 pm</span>
         <div class="pc-price"><span class="pc-num" data-p="1750,2650,4300"></span></div>
-        <p class="pc-note" data-de="Mind. 300 Bilder, Long Recap (mind. 120 s) und 2 Reels. Alles Weitere in 3 Werktagen.">At least 300 images, long recap (min. 120 s) and 2 reels. Everything else within 3 working days.</p>
+        <p class="pc-note" data-mode="0" data-de="Mind. 300 bearbeitete Bilder. Die ersten direkt im Anschluss, der Rest in 3 Werktagen.">At least 300 edited images. The first ones right after the shoot, the rest within 3 working days.</p>
+        <p class="pc-note" data-mode="1" data-de="Long Recap (mind. 120 s) und 2 Reels, innerhalb von fünf Werktagen.">Long recap (min. 120 s) and 2 reels, within five working days.</p>
+        <p class="pc-note" data-mode="2" data-de="Mind. 300 Bilder, Long Recap (mind. 120 s) und 2 Reels. Erste Bilder direkt im Anschluss.">At least 300 images, long recap (min. 120 s) and 2 reels. First images right after the shoot.</p>
         <a class="book-link" href="https://cal.com/neverdaless/stand-full" target="_blank" rel="noopener" data-de="Buchen">Book</a>
       </div>
     </article>
@@ -459,7 +468,9 @@ section.alt .flex-bar{border-color:#2a2a2a}
         <span class="when" data-de="1–3 Std, 16 bis 24 Uhr">1–3 h, 4 pm to midnight</span>
         <div class="pc-price"><span class="pc-num" data-p="220,350,520" data-pre="1"></span>
         <span class="pc-per" data-h="340,590,880|450,830,1230"></span></div>
-        <p class="pc-note" data-de="Stimmung, Gäste, Reden, Gruppenbilder. Erstes Material am nächsten Morgen.">Atmosphere, guests, speeches, group shots. First material the next morning.</p>
+        <p class="pc-note" data-mode="0" data-de="Stimmung, Gäste, Reden, Gruppenbilder. Mind. 30 bearbeitete Bilder pro Stunde, die ersten am nächsten Morgen.">Atmosphere, guests, speeches, group shots. At least 30 edited images per hour, the first ones the next morning.</p>
+        <p class="pc-note" data-mode="1" data-de="Stimmung, Gäste, Reden. Ein Reel (mind. 30 s) pro Stunde, innerhalb von fünf Werktagen.">Atmosphere, guests, speeches. One reel (min. 30 s) per hour, within five working days.</p>
+        <p class="pc-note" data-mode="2" data-de="Stimmung, Gäste, Reden, Gruppenbilder. Mind. 30 Bilder und ein Reel (mind. 30 s) pro Stunde.">Atmosphere, guests, speeches, group shots. At least 30 images and one reel (min. 30 s) per hour.</p>
         <a class="book-link" href="https://cal.com/neverdaless/stand-party" target="_blank" rel="noopener" data-de="Buchen">Book</a>
       </div>
     </article>
@@ -503,7 +514,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
   <button type="button" data-lang="de" aria-pressed="false">DE</button>
 </div>
 
-<p class="foot bleed">NEVERDALESS eGbR · <a href="https://www.neverdaless.com">neverdaless.com</a></p>
+<p class="foot bleed">NEVERDALESS eGbR · <a href="https://www.neverdaless.com">neverdaless.com</a> · <a href="https://www.neverdaless.com/contactus-1" data-de="Impressum">Imprint</a> · <a href="https://www.neverdaless.com/contactus" data-de="Datenschutz">Privacy</a></p>
 
 <script>
 (function(){
@@ -666,6 +677,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
       el.textContent = (de ? "2 Std " : "2 h ") + eur(h[0].split(",")[mode], de) + " · " + (de ? "3 Std " : "3 h ") + eur(h[1].split(",")[mode], de);
     });
     document.querySelectorAll(".pc-switch button").forEach(function(b){ b.setAttribute("aria-pressed", String(+b.getAttribute("data-m") === mode)); });
+    var pcs = document.querySelector(".pc-cards"); if (pcs) pcs.className = "pc-cards m" + mode;
   };
   var sw = document.querySelector(".pc-switch");
   if (sw) sw.addEventListener("click", function(e){ var b = e.target.closest("button"); if (!b) return; mode = +b.getAttribute("data-m"); window.ndlPrices(); });
