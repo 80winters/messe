@@ -233,6 +233,25 @@ section.alt .flex-bar{border-color:#2a2a2a}
 .flex-bar .fb-text{display:flex;flex-direction:column;gap:5px;max-width:70ch}
 .flex-bar .fb-h{font-family:var(--display);font-size:clamp(17px,1.8vw,21px);text-transform:uppercase;line-height:1}
 .flex-bar .fb-t{font-size:13.5px;color:var(--ink-2);line-height:1.45}
+
+/* Wunschzeiten-Wähler */
+.flex-bar.tw{display:block}
+.tw-grid{margin-top:18px;display:grid;grid-template-columns:44px repeat(3,1fr);gap:3px;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.tw-grid .tw-day{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);text-align:center;padding:4px 0 6px}
+.tw-grid .tw-h{font-size:11px;color:var(--ink-3);text-align:right;padding-right:6px;line-height:26px}
+.tw-grid button{height:26px;border:1px solid var(--line);background:transparent;cursor:pointer;padding:0;font:inherit;color:transparent}
+.tw-grid button:hover{border-color:var(--ink-3)}
+.tw-grid button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink)}
+.tw-grid .tw-eve{background:rgba(255,255,255,.025)}
+.tw-grid .tw-sep{grid-column:1/-1;height:1px;background:var(--line);margin:3px 0}
+.tw-out{margin-top:16px;font-size:14px;color:var(--ink-2);line-height:1.6;min-height:22px}
+.tw-out b{color:var(--ink);font-weight:600}
+.tw-out .tw-sum{margin-top:6px;font-family:var(--display);font-size:22px;color:var(--ink);text-transform:uppercase}
+.tw-actions{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.tw-actions .tw-send{margin-top:0;flex:0 1 320px}
+.tw-actions .tw-send[aria-disabled="true"]{opacity:.35;pointer-events:none}
+.tw-reset{background:none;border:0;color:var(--ink-3);font:inherit;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;padding:6px 0}
+.tw-else{display:block;margin-top:16px}
 .party{margin-top:10px;background:var(--raise);border:1px solid var(--line);padding:clamp(22px,2.2vw,28px);display:grid;grid-template-columns:1fr;gap:24px}
 @media(min-width:800px){.party{grid-template-columns:1.1fr 1fr;align-items:start;gap:40px}}
 .party-pics{position:relative;width:100%;max-width:680px;aspect-ratio:283/100;margin-top:4px;overflow:hidden;background:linear-gradient(to right,var(--ground),#1b1712 50%,var(--ground))}
@@ -486,12 +505,18 @@ section.alt .flex-bar{border-color:#2a2a2a}
       </div>
     </article>
   </div>
-  <div class="flex-bar">
+  <div class="flex-bar tw" id="wunschzeit">
     <div class="fb-text">
-      <span class="fb-h" data-de="Etwas anderes?">Something else?</span>
-      <span class="fb-t" data-de="Mehrere kurze Termine über alle Messetage verteilt oder etwas, das oben nicht steht.">Several short bookings spread over every day of the show, or anything that isn't listed above.</span>
+      <span class="fb-h" data-de="Eigene Zeiten wählen">Pick your own times</span>
+      <span class="fb-t" data-de="Tippen oder ziehen Sie die Stunden, die Sie brauchen – auch mehrere Blöcke und über mehrere Tage. Der Preis rechnet sich automatisch, wir bestätigen innerhalb von 24 Stunden.">Tap or drag the hours you need – several blocks and several days are fine. The price updates automatically, we confirm within 24 hours.</span>
     </div>
-    <a class="fb-link" href="#kontakt" data-de="Zum Kontakt">Get in touch</a>
+    <div class="tw-grid" role="group" aria-label="Hours"></div>
+    <div class="tw-out" aria-live="polite"></div>
+    <div class="tw-actions">
+      <a class="book-link tw-send" href="#" data-de="Zeiten per Mail anfragen">Request these times by email</a>
+      <button type="button" class="tw-reset" data-de="Auswahl löschen">Clear selection</button>
+    </div>
+    <span class="fb-t tw-else"><span data-de="Etwas ganz anderes?">Something else entirely?</span> <a class="fb-link" href="#kontakt" data-de="Zum Kontakt">Get in touch</a></span>
   </div>
   <p class="fine" data-de="Termine am Tag zwischen 8 und 18 Uhr, Beginn frei wählbar. Alle Preise netto, für Unternehmen in Deutschland zzgl. 19 % USt. Für Unternehmen aus dem EU-Ausland gilt das Reverse-Charge-Verfahren, außerhalb der EU fällt keine deutsche USt an. Unbeschränkte Nutzungsrechte, Onlinegalerie und Datenhandling sind enthalten, Anfahrt fällt nicht an. Reels und Recap-Videos kommen innerhalb von fünf Werktagen.">Daytime bookings between 8 am and 6 pm, start any time. All prices net, plus 19&nbsp;% VAT for companies in Germany. For companies in other EU countries the reverse-charge procedure applies; outside the EU no German VAT is charged. Unlimited usage rights, online gallery and data handling are included, and there are no travel costs. Reels and recap videos are delivered within five working days.</p>
 </section>
@@ -724,6 +749,67 @@ section.alt .flex-bar{border-color:#2a2a2a}
   var sw = document.querySelector(".pc-switch");
   if (sw) sw.addEventListener("click", function(e){ var b = e.target.closest("button"); if (!b) return; mode = +b.getAttribute("data-m"); window.ndlPrices(); });
   window.ndlPrices();
+})();
+</script>
+
+<script>
+/* --- Wunschzeiten-Wähler: Stunden antippen/ziehen, Preis nach Paketlogik (günstigste Variante je Tag) --- */
+(function(){
+  var box=document.getElementById("wunschzeit"); if(!box) return;
+  var grid=box.querySelector(".tw-grid"), out=box.querySelector(".tw-out"), send=box.querySelector(".tw-send"), reset=box.querySelector(".tw-reset");
+  var DAYS=[{de:"Di 6.10.",en:"Tue 6 Oct"},{de:"Mi 7.10.",en:"Wed 7 Oct"},{de:"Do 8.10.",en:"Thu 8 Oct"}];
+  var H0=8,H1=24, sel={};
+  var P={hour:[[220,340,450],[350,590,830],[520,880,1230]], half:[950,1400,2250], full:[1750,2650,4300]};
+  function lang(){ return document.documentElement.lang==="de"?"de":"en"; }
+  function mode(){ var c=document.querySelector(".pc-cards"); var m=c&&c.className.match(/m(\d)/); return m?+m[1]:0; }
+  function fmt(n){ return lang()==="de" ? n.toLocaleString("de-DE")+" €" : "€"+n.toLocaleString("en-GB"); }
+  function pkg(h,m){ if(h<=3) return P.hour[m][h-1]; if(h<=5) return P.half[m]; if(h<=10) return P.full[m]; return null; }
+  function build(){
+    grid.innerHTML=""; grid.appendChild(document.createElement("span"));
+    DAYS.forEach(function(d){ var e=document.createElement("span"); e.className="tw-day"; e.textContent=d[lang()]; grid.appendChild(e); });
+    for(var h=H0; h<H1; h++){
+      if(h===18){ var sp=document.createElement("span"); sp.className="tw-sep"; grid.appendChild(sp); }
+      var l=document.createElement("span"); l.className="tw-h"; l.textContent=h+":00"; grid.appendChild(l);
+      for(var d=0; d<3; d++){
+        var b=document.createElement("button"); b.type="button"; b.dataset.k=d+"-"+h; b.textContent=h;
+        b.setAttribute("aria-label", DAYS[d][lang()]+" "+h+"–"+(h+1)); b.setAttribute("aria-pressed", sel[d+"-"+h]?"true":"false");
+        if(h>=18) b.className="tw-eve"; grid.appendChild(b);
+      }
+    }
+  }
+  var painting=null;
+  grid.addEventListener("pointerdown", function(e){ var b=e.target.closest("button"); if(!b) return; painting=!sel[b.dataset.k]; set(b); if(e.pointerType==="mouse") e.preventDefault(); });
+  grid.addEventListener("pointerover", function(e){ if(painting===null||e.pointerType!=="mouse") return; var b=e.target.closest("button"); if(b) set(b); });
+  window.addEventListener("pointerup", function(){ painting=null; });
+  function set(b){ if(painting) sel[b.dataset.k]=1; else delete sel[b.dataset.k]; b.setAttribute("aria-pressed", painting?"true":"false"); render(); }
+  function blocks(d){ var r=[], cur=null; for(var h=H0; h<H1; h++){ if(sel[d+"-"+h]){ if(cur&&cur[1]===h) cur[1]=h+1; else { cur=[h,h+1]; r.push(cur);} } } return r; }
+  function render(){
+    var m=mode(), L=lang(), lines=[], mail=[], total=0, open=false;
+    for(var d=0; d<3; d++){
+      var bl=blocks(d); if(!bl.length) continue;
+      var hrs=bl.reduce(function(a,x){return a+x[1]-x[0];},0);
+      var byBlock=bl.reduce(function(a,x){ var p=pkg(x[1]-x[0],m); return (a===null||p===null)?null:a+p; },0);
+      var byDay=pkg(hrs,m), price=[byBlock,byDay].filter(function(x){return x!==null;}).sort(function(a,b){return a-b;})[0];
+      var times=bl.map(function(x){return x[0]+"–"+x[1];}).join(" + ")+(L==="de"?" Uhr":"");
+      var eve=bl.some(function(x){return x[1]>18;});
+      if(price==null){ open=true; } else total+=price;
+      var t=DAYS[d][L]+": "+times+" ("+hrs+(L==="de"?" Std":" h")+")";
+      lines.push("<b>"+t+"</b> · "+(price==null?(L==="de"?"Preis auf Anfrage":"price on request"):fmt(price))+(eve?(L==="de"?" · Abendtermin":" · evening"):""));
+      mail.push(t);
+    }
+    var svc=[["Foto","Video","Foto + Video"],["Photo","Video","Photo + video"]][L==="de"?0:1][m];
+    if(!lines.length){ out.innerHTML=L==="de"?"Noch keine Stunden gewählt.":"No hours selected yet."; send.setAttribute("aria-disabled","true"); send.href="#"; return; }
+    out.innerHTML=lines.join("<br>")+'<div class="tw-sum">'+svc+" · "+(open?(L==="de"?"ab ":"from "):"")+fmt(total)+(L==="de"?" netto":" net")+"</div>";
+    send.removeAttribute("aria-disabled");
+    var subj=L==="de"?"Anfrage Wunschzeiten ALUMINIUM 2026":"Custom times request ALUMINIUM 2026";
+    var body=L==="de"
+      ? "Guten Tag Herr Mathieu,\n\nwir möchten folgende Zeiten anfragen:\n"+mail.join("\n")+"\nLeistung: "+svc+"\nRichtwert laut Seite: "+fmt(total)+" netto\n\nFirma und Stand:\nAnsprechpartner vor Ort + Handy:\n\nViele Grüße"
+      : "Hello Mr Mathieu,\n\nwe would like to request these times:\n"+mail.join("\n")+"\nService: "+svc+"\nGuide price from the page: "+fmt(total)+" net\n\nCompany and stand:\nContact on site + mobile:\n\nBest regards";
+    send.href="mailto:richard@neverdaless.com?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(body);
+  }
+  reset.addEventListener("click", function(){ sel={}; build(); render(); });
+  document.addEventListener("click", function(e){ if(e.target.closest(".pc-switch button, .bar button")) setTimeout(function(){ build(); render(); }, 0); });
+  build(); render();
 })();
 </script>
 </body></html>
