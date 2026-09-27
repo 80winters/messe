@@ -109,6 +109,12 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .more-btn:hover{color:var(--ink);border-color:var(--ink-3)}
 .shots.open + .more-btn .m-open,.shots:not(.open) + .more-btn .m-close{display:none}
 .shots img{width:100%;transition:transform .5s cubic-bezier(.2,.6,.2,1),filter .5s}
+/* Weiches Scrollen (Lenis, nur Maus/Trackpad) + versetzte Galerie */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+.shots.px img{scale:1.1}
 @media(hover:hover){.shots figure:hover img{transform:scale(1.035);filter:brightness(1.07)}}
 
 /* ---------- Stichpunkte mit Lupe ---------- */
@@ -514,7 +520,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
       <a class="book-link" href="https://cal.com/neverdaless" target="_blank" rel="noopener" data-de="Kalender in neuem Tab öffnen">Open the calendar in a new tab</a>
     </div>
     <p class="cal-hint" data-de="Der Kalender wird von Cal.com bereitgestellt. Eine Verbindung zu Cal.com entsteht erst, wenn Sie ihn anzeigen oder öffnen.">The calendar is provided by Cal.com. A connection to Cal.com is only made once you show or open it.</p>
-    <div id="cal-inline"></div>
+    <div id="cal-inline" data-lenis-prevent></div>
   </div>
 </section>
 
@@ -525,6 +531,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
 
 <p class="foot bleed">NEVERDALESS eGbR · <a href="https://www.neverdaless.com">neverdaless.com</a> · <a href="https://www.neverdaless.com/contactus-1" data-de="Impressum">Imprint</a> · <a href="/datenschutz/" data-de="Datenschutz">Privacy</a></p>
 
+<script src="js/lenis.min.js"></script>
 <script>
 (function(){
   /* ===== MESSE — nur diese Zeilen für eine andere Messe ändern ===== */
@@ -615,6 +622,33 @@ section.alt .flex-bar{border-color:#2a2a2a}
     }
     var wrap = document.getElementById("cal"), btn = document.querySelector(".cal-load");
     if (btn) btn.addEventListener("click", function(){ wrap.classList.add("started"); loadCal(); });
+  })();
+
+  /* --- Weiches Scrollen wie bei ScrollSmoother, aber mit nativem Scroll (Sticky-Leiste bleibt), nur Desktop --- */
+  (function(){
+    if (reduce || !window.Lenis || !window.matchMedia("(pointer: fine)").matches) return;
+    var lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 1 });
+    requestAnimationFrame(function raf(t){ lenis.raf(t); requestAnimationFrame(raf); });
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener("click", function(e){
+        var el = document.querySelector(a.getAttribute("href"));
+        if (!el) return; e.preventDefault(); lenis.scrollTo(el, { offset: -8, duration: 1.3 });
+      });
+    });
+    /* versetzt: Galeriebilder bewegen sich je Spalte leicht unterschiedlich schnell */
+    var shots = document.querySelector(".shots"); if (!shots) return;
+    shots.classList.add("px");
+    var imgs = [].slice.call(shots.querySelectorAll("img")), f = [0.05, 0.09, 0.07];
+    function par(){
+      var vh = window.innerHeight;
+      imgs.forEach(function(im, i){
+        var r = im.parentNode.getBoundingClientRect();
+        if (r.height === 0 || r.bottom < -50 || r.top > vh + 50) return;
+        var c = (r.top + r.height / 2 - vh / 2) / vh;
+        im.style.translate = "0 " + (-c * f[i % 3] * r.height).toFixed(1) + "px";
+      });
+    }
+    lenis.on("scroll", par); window.addEventListener("resize", par); par();
   })();
 
   /* --- Galerie aufklappen --- */
