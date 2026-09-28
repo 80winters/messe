@@ -243,6 +243,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
 .tw-grid button:hover{border-color:var(--ink-3)}
 .tw-grid button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink)}
 .tw-grid .tw-eve{background:rgba(255,255,255,.025)}
+.tw-grid button.tw-full{background:repeating-linear-gradient(135deg,#1a1a1a 0 6px,#111 6px 12px);border-color:#1a1a1a;cursor:not-allowed}
 .tw-grid .tw-sep{grid-column:1/-1;height:1px;background:var(--line);margin:3px 0}
 .tw-out{margin-top:16px;font-size:14px;color:var(--ink-2);line-height:1.6;min-height:22px}
 .tw-out b{color:var(--ink);font-weight:600}
@@ -759,6 +760,9 @@ section.alt .flex-bar{border-color:#2a2a2a}
   var grid=box.querySelector(".tw-grid"), out=box.querySelector(".tw-out"), send=box.querySelector(".tw-send"), reset=box.querySelector(".tw-reset");
   var DAYS=[{de:"Di 6.10.",en:"Tue 6 Oct"},{de:"Mi 7.10.",en:"Wed 7 Oct"},{de:"Do 8.10.",en:"Thu 8 Oct"}];
   var H0=8,H1=24, sel={};
+  /* Belegte Stunden (von Claude gepflegt, sobald Buchungen bestätigt sind): "Tag-Stunde": Anzahl Buchungen. Tag 0=Di, 1=Mi, 2=Do. Ab 2 Buchungen ist die Stunde gesperrt. */
+  var BELEGT = {};
+  var MAXPAR = 2;
   var P={hour:[[220,340,450],[350,590,830],[520,880,1230]], half:[950,1400,2250], full:[1750,2650,4300]};
   function lang(){ return document.documentElement.lang==="de"?"de":"en"; }
   function mode(){ var c=document.querySelector(".pc-cards"); var m=c&&c.className.match(/m(\d)/); return m?+m[1]:0; }
@@ -773,13 +777,15 @@ section.alt .flex-bar{border-color:#2a2a2a}
       for(var d=0; d<3; d++){
         var b=document.createElement("button"); b.type="button"; b.dataset.k=d+"-"+h; b.textContent=h;
         b.setAttribute("aria-label", DAYS[d][lang()]+" "+h+"–"+(h+1)); b.setAttribute("aria-pressed", sel[d+"-"+h]?"true":"false");
-        if(h>=18) b.className="tw-eve"; grid.appendChild(b);
+        if(h>=18) b.className="tw-eve";
+        if((BELEGT[d+"-"+h]||0)>=MAXPAR){ b.disabled=true; b.classList.add("tw-full"); b.setAttribute("aria-label", DAYS[d][lang()]+" "+h+"–"+(h+1)+(lang()==="de"?" belegt":" booked")); delete sel[d+"-"+h]; }
+        grid.appendChild(b);
       }
     }
   }
   var painting=null;
-  grid.addEventListener("pointerdown", function(e){ var b=e.target.closest("button"); if(!b) return; painting=!sel[b.dataset.k]; set(b); if(e.pointerType==="mouse") e.preventDefault(); });
-  grid.addEventListener("pointerover", function(e){ if(painting===null||e.pointerType!=="mouse") return; var b=e.target.closest("button"); if(b) set(b); });
+  grid.addEventListener("pointerdown", function(e){ var b=e.target.closest("button"); if(!b||b.disabled) return; painting=!sel[b.dataset.k]; set(b); if(e.pointerType==="mouse") e.preventDefault(); });
+  grid.addEventListener("pointerover", function(e){ if(painting===null||e.pointerType!=="mouse") return; var b=e.target.closest("button"); if(b&&!b.disabled) set(b); });
   window.addEventListener("pointerup", function(){ painting=null; });
   function set(b){ if(painting) sel[b.dataset.k]=1; else delete sel[b.dataset.k]; b.setAttribute("aria-pressed", painting?"true":"false"); render(); }
   function blocks(d){ var r=[], cur=null; for(var h=H0; h<H1; h++){ if(sel[d+"-"+h]){ if(cur&&cur[1]===h) cur[1]=h+1; else { cur=[h,h+1]; r.push(cur);} } } return r; }
