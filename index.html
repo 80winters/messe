@@ -53,12 +53,12 @@ h2{font-size:clamp(20px,2.4vw,30px);line-height:1.06}
 /* ---------- Sprachumschalter ---------- */
 .bar{
   display:flex;justify-content:flex-end;gap:2px;
-  padding-block:12px;background:var(--ground);
+  padding-block:16px;background:var(--ground);align-items:center;
   position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
 }
 .bar.static{position:static}
 .bar .logo{margin-right:auto;display:flex;align-items:center;color:var(--ink);padding:4px 0}
-.bar .logo svg{height:18px;width:auto;display:block}
+.bar .logo svg{height:26px;width:auto;display:block}
 .bar .logo:hover{opacity:.75}
 .bar button{
   font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.16em;
