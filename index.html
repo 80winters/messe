@@ -247,6 +247,9 @@ section.alt .flex-bar{border-color:#2a2a2a}
 .tw-grid button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink)}
 .tw-grid .tw-eve{background:rgba(255,255,255,.025)}
 .tw-grid button.tw-full{background:repeating-linear-gradient(135deg,#1a1a1a 0 6px,#111 6px 12px);border-color:#1a1a1a;cursor:not-allowed}
+.tw-grid button.tw-past{opacity:.15;cursor:not-allowed}
+.tw-grid button.tw-past:hover{border-color:var(--line)}
+.tw-grid .tw-day.tw-past{opacity:.35}
 .tw-grid .tw-sep{grid-column:1/-1;height:1px;background:var(--line);margin:3px 0}
 .tw-out{margin-top:16px;font-size:14px;color:var(--ink-2);line-height:1.6;min-height:22px}
 .tw-out b{color:var(--ink);font-weight:600}
@@ -756,6 +759,10 @@ section.alt .flex-bar{border-color:#2a2a2a}
   var grid=box.querySelector(".tw-grid"), out=box.querySelector(".tw-out"), send=box.querySelector(".tw-send"), reset=box.querySelector(".tw-reset");
   var DAYS=[{de:"Di 6.10.",en:"Tue 6 Oct"},{de:"Mi 7.10.",en:"Wed 7 Oct"},{de:"Do 8.10.",en:"Thu 8 Oct"}];
   var H0=8,H1=24, sel={};
+  /* Vergangene Stunden (Ortszeit Düsseldorf) sind ausgegraut und nicht wählbar; die Seite prüft das alle 5 Minuten neu */
+  var DATES=["2026-10-06","2026-10-07","2026-10-08"];
+  function jetzt(){ var p={}; new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Berlin",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",hourCycle:"h23"}).formatToParts(new Date()).forEach(function(x){ p[x.type]=x.value; }); return {d:p.year+"-"+p.month+"-"+p.day, h:+p.hour}; }
+  function vorbei(d,h){ var n=jetzt(); return DATES[d]<n.d || (DATES[d]===n.d && h<=n.h); }
   /* Belegte Stunden (von Claude gepflegt, sobald Buchungen bestätigt sind): "Tag-Stunde": Anzahl Buchungen. Tag 0=Di, 1=Mi, 2=Do. Ab 2 Buchungen ist die Stunde gesperrt. */
   var BELEGT = {};
   var MAXPAR = 2;
@@ -767,7 +774,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
   function pkg(h,m){ return h>=1&&h<=10 ? P[m][h-1] : null; }
   function build(){
     grid.innerHTML=""; grid.appendChild(document.createElement("span"));
-    DAYS.forEach(function(d){ var e=document.createElement("span"); e.className="tw-day"; e.textContent=d[lang()]; grid.appendChild(e); });
+    DAYS.forEach(function(d){ var e=document.createElement("span"); e.className="tw-day"; e.textContent=d[lang()]; if(vorbei(DAYS.indexOf(d),H1-1)) e.classList.add("tw-past"); grid.appendChild(e); });
     for(var h=H0; h<H1; h++){
       if(h===18){ var sp=document.createElement("span"); sp.className="tw-sep"; grid.appendChild(sp); }
       var l=document.createElement("span"); l.className="tw-h"; l.textContent=h+":00"; grid.appendChild(l);
@@ -776,6 +783,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
         b.setAttribute("aria-label", DAYS[d][lang()]+" "+h+"–"+(h+1)); b.setAttribute("aria-pressed", sel[d+"-"+h]?"true":"false");
         if(h>=18) b.className="tw-eve";
         if((BELEGT[d+"-"+h]||0)>=MAXPAR){ b.disabled=true; b.classList.add("tw-full"); b.setAttribute("aria-label", DAYS[d][lang()]+" "+h+"–"+(h+1)+(lang()==="de"?" belegt":" booked")); delete sel[d+"-"+h]; }
+        if(vorbei(d,h)){ b.disabled=true; b.classList.add("tw-past"); b.setAttribute("aria-label", DAYS[d][lang()]+" "+h+"–"+(h+1)+(lang()==="de"?" vorbei":" past")); delete sel[d+"-"+h]; }
         grid.appendChild(b);
       }
     }
@@ -813,6 +821,7 @@ section.alt .flex-bar{border-color:#2a2a2a}
   reset.addEventListener("click", function(){ sel={}; build(); render(); });
   document.addEventListener("click", function(e){ if(e.target.closest(".pc-switch button, .bar button")) setTimeout(function(){ build(); render(); }, 0); });
   build(); render();
+  setInterval(function(){ build(); render(); }, 300000);
 })();
 </script>
 </body></html>
